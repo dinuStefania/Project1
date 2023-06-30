@@ -1,0 +1,70 @@
+
+/*
+    ------ Waspmote Pro Code Example --------
+
+    Explanation: This is the basic Code for Waspmote Pro
+
+    Copyright (C) 2016 Libelium Comunicaciones Distribuidas S.L.
+    http://www.libelium.com
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+#include <WaspSensorCities_PRO.h>
+#include <WaspFrame.h>
+#include <WaspPWR.h>
+#include <WaspSensorBattery.h>
+
+//declare variables
+
+float temperature;
+float humidity;
+float pressure;
+float batteryLevel;
+
+char node_ID[] = "Node_01"; // assign a node ID in the network or system where the code is used
+
+void setup(){
+USB.ON();
+USB.println(F("Frame Utility Example for Smart Environment Pro Sensor Board"));
+
+// Set the Waspmote ID
+frame.setID(node_ID);
+}
+
+
+void loop()
+{
+//Read variables 
+temperature = NO.getTemp();
+humidity = NO.getHumidity();
+pressure = NO.getPressure();
+batteryLevel = PWR.getBatteryLevel();
+
+// Create new frame (ASCII)
+    frame.createFrame(ASCII);
+
+    // Add temperature
+    frame.addSensor(SENSOR_GASES_PRO_TC, temperature);
+    // Add humidity
+    frame.addSensor(SENSOR_GASES_PRO_HUM, humidity);
+    // Add pressure value
+    frame.addSensor(SENSOR_GASES_PRO_PRES, pressure);
+    // Add battery level
+    frame.addSensor(SENSOR_BATTERY, batteryLevel);
+ 
+ // Show the frame
+    frame.showFrame();
+    delay(1000); //pause the program for 1 second (1000 milliseconds) between each iteration
+}
